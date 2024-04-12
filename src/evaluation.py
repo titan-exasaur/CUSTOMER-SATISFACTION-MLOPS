@@ -43,8 +43,8 @@ class R2(Evaluation):
             logging.info("Calculating r2 score")
             r2 = r2_score(y_true,y_pred)
             logging.info(f"R2 Score : {r2}")
-            return mse
-        except r2 as e:
+            return r2
+        except Exception as e:
             logging.error("Error in Calculating r2 score : {}".format(e))
             raise e
         

@@ -7,29 +7,33 @@ from .config import ModelNameConfig
 
 @step
 def train_model(
-    X_train:pd.DataFrame,
-    X_test : pd.DataFrame,
-    y_train : pd.Series,
-    y_test : pd.Series,
-    config : ModelNameConfig
+    X_train: pd.DataFrame,
+    X_test: pd.DataFrame,
+    y_train: pd.Series,
+    y_test: pd.Series,
+    config: ModelNameConfig
 ) -> RegressorMixin:
     """
     Trains the model on the cleansed ingested data.
     
     Args:
-            X_train:pd.DataFrame,
-            X_test : pd.DataFrame,
-            y_train : pd.Series,
-            y_test : pd.Series
+        X_train: pd.DataFrame,
+        X_test: pd.DataFrame,
+        y_train: pd.Series,
+        y_test: pd.Series,
+        config: ModelNameConfig
     """
     try:
         model = None
-        if config.model_name  == "LinearRegression":
+        if config.model_name == "LinearRegression":
             model = LinearRegressionModel()
-            trained_model = LinearRegressionModel().train(X_train,y_train)
-            return train_model
+            trained_model = model.train(X_train, y_train)
+            return trained_model
         else:
             raise ValueError("Model {} not supported".format(config.model_name))
+    except ValueError as ve:
+        logging.error("ValueError in training model: {}".format(ve))
+        raise
     except Exception as e:
-        logging.error("Error in training model : {}".format(e))
+        logging.error("Error in training model: {}".format(e))
         raise e
